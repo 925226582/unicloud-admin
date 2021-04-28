@@ -1,0 +1,19 @@
+{
+	"passwordSecret": "jiangyepwdstr",
+	"tokenSecret": "jiangyetokenstr",
+	"tokenExpiresIn": 7200,
+	"tokenExpiresThreshold": 600,
+	"passwordErrorLimit": 6,
+	"passwordErrorRetryTime": 3600,
+	"autoSetInviteCode": false,
+	"forceInviteCode": false,
+	"mp-weixin": {
+		"tokenExpiresIn": 259200,
+		"oauth": {
+			"weixin": {
+				"appid": "wx8a808ef27793bbe7",
+				"appsecret": "3df25dde519a927086b98f454458f5e9"
+			}
+		}
+	}
+}
