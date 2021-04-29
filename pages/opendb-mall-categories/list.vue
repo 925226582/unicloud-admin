@@ -79,7 +79,7 @@
 		catelist.forEach(function(vo, k) {
 			if (vo['parent_id'] == pid && vo['_id'] != id) {
 				vo["dep"] = dep;
-				vo['name'] = new Array(dep).join('﹂') + vo['name']
+				vo['name'] = new Array(dep).join('﹄') + vo['name']
 				newarr.push(vo);
 				flatMenus(newarr, catelist, vo['_id'], dep + 1, id);
 			}
@@ -126,6 +126,7 @@
 					}
 				})
 			},
+
 			//直接修改switch
 			binddata(k, value, id) {
 				let obj = {}
@@ -145,6 +146,11 @@
 					uni.hideLoading()
 				})
 
+			},
+			// 删除相关
+			// 多选
+			selectionChange(e) {
+				this.selectedIndexs = e.detail.index
 			},
 			//删除类别
 			confirmDelete(cates) {

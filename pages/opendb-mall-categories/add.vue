@@ -5,7 +5,9 @@
 				<uni-easyinput placeholder="类别名称" v-model="formData.name" trim="both" />
 			</uni-forms-item>
 			<uni-forms-item name="parent_id" label="所属分类">
-				
+				<uni-select-lay :value="formData.parent_id" toptitle="顶级分类名字自定义" :options="categoriesdata"
+					@selectitem="selectitem">
+				</uni-select-lay>
 			</uni-forms-item>
 			<uni-forms-item name="icon" label="类别图标">
 				<uni-file-picker v-model="icon" fileMediatype="image" mode="grid" :limit="1" return-type="object"
@@ -44,7 +46,6 @@
 	import {
 		validator
 	} from '../../js_sdk/validator/opendb-mall-categories.js';
-
 	const db = uniCloud.database();
 	const dbCollectionName = 'opendb-mall-categories';
 
@@ -70,7 +71,7 @@
 		catelist.forEach(function(vo, k) {
 			if (vo['parent_id'] == pid && vo['_id'] != id) {
 				vo["dep"] = dep;
-				vo['name'] = new Array(dep).join('﹂') + vo['name']
+				vo['name'] = new Array(dep).join('﹄') + vo['name']
 				newarr.push(vo);
 				flatMenus(newarr, catelist, vo['_id'], dep + 1, id);
 			}
@@ -113,10 +114,20 @@
 				}).then(res => {
 					this.categoriesdata = flatMenu(res, "", 1);
 				}).catch(err => {
-					this.errMsg = err.message
+					uni.showModal({
+						content: err.message || '请求服务失败',
+						showCancel: false
+					})
 				}).finally(() => {
 					this.loading = false
 				})
+			},
+			selectitem(index) {
+				if (index >= 0) {
+					this.formData.parent_id = this.categoriesdata[index]._id;
+				} else {
+					this.formData.parent_id = ""
+				}
 			},
 			// 图标上传相关
 			// 获取上传状态
@@ -162,22 +173,20 @@
 
 			submitForm(value) {
 				// 使用 clientDB 提交数据
-				console.log(value)
-				// db.collection(dbCollectionName).add(value).then((res) => {
-				// 	uni.showToast({
-				// 		icon: 'none',
-				// 		title: '新增成功'
-				// 	})
-				// 	this.getOpenerEventChannel().emit('refreshData')
-				// 	setTimeout(() => uni.navigateBack(), 500)
-				// }).catch((err) => {
-				// 	uni.showModal({
-				// 		content: err.message || '请求服务失败',
-				// 		showCancel: false
-				// 	})
-				// }).finally(() => {
-				// 	uni.hideLoading()
-				// })
+				this.$request('system/categories/add', value).then((res) => {
+					uni.showToast({
+						title: '新增成功'
+					})
+					setTimeout(() => uni.navigateBack(), 500)
+				}).catch((err) => {
+					uni.showModal({
+						content: err.message || '请求服务失败',
+						showCancel: false
+					})
+				}).finally(() => {
+					uni.hideLoading()
+				})
+
 			}
 		}
 	}
