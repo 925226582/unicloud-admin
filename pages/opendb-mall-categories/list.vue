@@ -30,7 +30,7 @@
 					<uni-td align="center">{{item.sort}}</uni-td>
 					<uni-td align="left">{{item.name}}</uni-td>
 					<uni-td align="center">
-						<image :src="item.icon" mode="aspectFit" style="width:40px;height:40px"></image>
+						<image :src="item.icon.url" mode="aspectFit" style="width:40px;height:40px"></image>
 					</uni-td>
 					<uni-td align="center">{{item.description}}</uni-td>
 					<uni-td align="center">

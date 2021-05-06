@@ -4,11 +4,12 @@
 			<uni-forms-item name="parent_id" label="">
 				<uni-easyinput placeholder="父ID，用于多级分类" v-model="formData.parent_id" />
 			</uni-forms-item>
-			<uni-forms-item name="name" label="类别名称" required>
-				<uni-easyinput placeholder="类别名称" v-model="formData.name" trim="both" />
-			</uni-forms-item>
-			<uni-forms-item name="icon" label="图标地址">
-				<uni-easyinput placeholder="类别图标/图片地址" v-model="formData.icon" trim="both" />
+			<uni-forms-item name="icon" label="类别图标">
+				<uni-file-picker v-model="formData.icon" fileMediatype="image" mode="grid" :limit="1" return-type="object"
+					disable-preview :auto-upload="false" file-extname="png,jpg" ref="iconupload" @select="iconselect"
+					@success="iconsuccess" @fail="iconfail" @progress="iconprogress">
+					<!-- <image src="../../static/icon/jia.png" mode="aspectFit" style="width:150rpx;height:150rpx"></image> -->
+				</uni-file-picker>
 			</uni-forms-item>
 			<uni-forms-item name="sort" label="排序">
 				<uni-easyinput placeholder="类别排序，越大越靠后" type="number" v-model="formData.sort" />
@@ -62,6 +63,7 @@
 					"description": "",
 					"is_hot_show": null,
 					"is_index_show": null,
+					"status": true,
 					"create_date": null
 				},
 				formOptions: {},

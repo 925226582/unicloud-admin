@@ -10,7 +10,7 @@
 				</uni-select-lay>
 			</uni-forms-item>
 			<uni-forms-item name="icon" label="类别图标">
-				<uni-file-picker v-model="icon" fileMediatype="image" mode="grid" :limit="1" return-type="object"
+				<uni-file-picker v-model="formData.icon" fileMediatype="image" mode="grid" :limit="1" return-type="object"
 					disable-preview :auto-upload="false" file-extname="png,jpg" ref="iconupload" @select="iconselect"
 					@success="iconsuccess" @fail="iconfail" @progress="iconprogress">
 					<!-- <image src="../../static/icon/jia.png" mode="aspectFit" style="width:150rpx;height:150rpx"></image> -->
@@ -81,11 +81,10 @@
 		data() {
 			return {
 				categoriesdata: [], //类别列表
-				icon: null,
 				formData: {
 					"parent_id": "",
 					"name": "",
-					"icon": "",
+					"icon": {},
 					"sort": 1000,
 					"description": "",
 					"is_hot_show": null,
@@ -151,7 +150,6 @@
 			},
 			// 上传成功
 			iconsuccess(e) {
-				this.formData.icon = this.icon.url;
 			},
 			// 上传失败
 			iconfail(e) {

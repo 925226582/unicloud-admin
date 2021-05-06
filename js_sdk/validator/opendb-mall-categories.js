@@ -20,12 +20,8 @@ const validator = {
 	},
 	"icon": {
 		"rules": [{
-				"format": "string"
-			},
-			{
-				"pattern": "^(http://|https://|/|./|@/)\\S"
-			}
-		],
+			"format": "object"
+		}],
 		"label": "图标地址"
 	},
 	"sort": {
