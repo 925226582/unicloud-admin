@@ -5,9 +5,9 @@
 				<uni-easyinput placeholder="父ID，用于多级分类" v-model="formData.parent_id" />
 			</uni-forms-item>
 			<uni-forms-item name="icon" label="类别图标">
-				<uni-file-picker v-model="formData.icon" fileMediatype="image" mode="grid" :limit="1" return-type="object"
-					disable-preview :auto-upload="false" file-extname="png,jpg" ref="iconupload" @select="iconselect"
-					@success="iconsuccess" @fail="iconfail" @progress="iconprogress">
+				<uni-file-picker v-model="formData.icon" fileMediatype="image" mode="grid" :limit="1"
+					return-type="object" disable-preview :auto-upload="false" file-extname="png,jpg" ref="iconupload"
+					@select="iconselect" @success="iconsuccess" @fail="iconfail" @progress="iconprogress">
 					<!-- <image src="../../static/icon/jia.png" mode="aspectFit" style="width:150rpx;height:150rpx"></image> -->
 				</uni-file-picker>
 			</uni-forms-item>
@@ -22,6 +22,9 @@
 			</uni-forms-item>
 			<uni-forms-item name="is_index_show" label="首页显示">
 				<switch @change="binddata('is_index_show', $event.detail.value)" :checked="formData.is_index_show" />
+			</uni-forms-item>
+			<uni-forms-item name="status" label="是否发布">
+				<switch @change="binddata('status', $event.detail.value)" :checked="formData.status" />
 			</uni-forms-item>
 			<uni-forms-item name="create_date" label="">
 				<uni-datetime-picker return-type="timestamp" :value="formData.create_date" />
@@ -58,7 +61,7 @@
 				formData: {
 					"parent_id": "",
 					"name": "",
-					"icon": "",
+					"icon": null,
 					"sort": null,
 					"description": "",
 					"is_hot_show": null,
@@ -68,7 +71,9 @@
 				},
 				formOptions: {},
 				rules: {
-					...getValidator(["parent_id","name","icon","sort","description","is_hot_show","is_index_show","status","create_date"])
+					...getValidator(["parent_id", "name", "icon", "sort", "description", "is_hot_show", "is_index_show",
+						"status", "create_date"
+					])
 				}
 			}
 		},
@@ -81,6 +86,32 @@
 			this.$refs.form.setRules(this.rules)
 		},
 		methods: {
+			// 图标上传相关
+			// 获取上传状态
+			iconselect(e) {
+				let _size = e.tempFiles[0].size;
+				//判断尺寸，小于50kb
+				if (_size > 1024 * 50) {
+					uni.showToast({
+						image: '/static/icon/error.png',
+						title: '选择的文件要小于50KB！',
+						duration: 2000
+					});
+					return;
+				}
+				this.$refs.iconupload.upload();
+			},
+			// 获取上传进度
+			iconprogress(e) {
+				console.log('上传进度：', e)
+			},
+			// 上传成功
+			iconsuccess(e) {
+			},
+			// 上传失败
+			iconfail(e) {
+				console.log('上传失败：', e)
+			},
 			/**
 			 * 触发表单提交
 			 */
@@ -97,21 +128,19 @@
 
 			submitForm(value) {
 				// 使用 clientDB 提交数据
-				db.collection(dbCollectionName).doc(this.formDataId).update(value).then((res) => {
+				this.$request('system/categories/update', Object.assign({
+					_id: this.formDataId,
+					data:value
+				}, value)).then((res) => {
 					uni.showToast({
-						icon: 'none',
 						title: '修改成功'
 					})
 					this.getOpenerEventChannel().emit('refreshData')
 					setTimeout(() => uni.navigateBack(), 500)
-				}).catch((err) => {
-					uni.showModal({
-						content: err.message || '请求服务失败',
-						showCancel: false
-					})
 				}).finally(() => {
 					uni.hideLoading()
 				})
+				
 			},
 
 			/**
@@ -123,7 +152,7 @@
 					mask: true
 				})
 				db.collection(dbCollectionName).doc(id).field(
-					'parent_id,name,icon,sort,description,is_hot_show,is_index_show,create_date').get().then((res) => {
+					'parent_id,name,icon,sort,description,is_hot_show,is_index_show,create_date,status').get().then((res) => {
 					const data = res.result.data[0]
 					if (data) {
 						this.formData = data

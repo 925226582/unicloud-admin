@@ -84,7 +84,7 @@
 				formData: {
 					"parent_id": "",
 					"name": "",
-					"icon": {},
+					"icon": null,
 					"sort": 1000,
 					"description": "",
 					"is_hot_show": null,
@@ -143,7 +143,6 @@
 				}
 				this.$refs.iconupload.upload();
 			},
-
 			// 获取上传进度
 			iconprogress(e) {
 				console.log('上传进度：', e)
