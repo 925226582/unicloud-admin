@@ -14,7 +14,7 @@ module.exports = class CategoriesService extends Service {
 		return cateList;
 	}
 	async update(categories) {
-		return this.collection.doc(categories._id).update(categories.data)
+		return this.collection.doc(categories._id).set(categories.data)
 	}
 	async add(categories) {
 		return this.collection.add(categories)

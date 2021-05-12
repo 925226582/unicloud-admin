@@ -1,8 +1,13 @@
 <template>
 	<view class="uni-container">
 		<uni-forms ref="form" :value="formData" validate-trigger="submit" err-show-type="toast">
-			<uni-forms-item name="parent_id" label="">
-				<uni-easyinput placeholder="父ID，用于多级分类" v-model="formData.parent_id" />
+			<uni-forms-item name="name" label="类别名称" required>
+				<uni-easyinput placeholder="类别名称" v-model="formData.name" trim="both" />
+			</uni-forms-item>
+			<uni-forms-item name="parent_id" label="所属分类">
+				<uni-select-lay :value="formData.parent_id" toptitle="顶级分类名字自定义" :options="categoriesdata"
+					@selectitem="selectitem">
+				</uni-select-lay>
 			</uni-forms-item>
 			<uni-forms-item name="icon" label="类别图标">
 				<uni-file-picker v-model="formData.icon" fileMediatype="image" mode="grid" :limit="1"
@@ -54,10 +59,29 @@
 		}
 		return reuslt
 	}
+	// 列表扁平化
 
+	//$id 代表在编辑页面 此id的所属栏目不可为自己，所以将$id的所属栏目剔除
+	function flatMenu(catelist, pid, dep, id = -1) {
+		var newarr = [];
+		flatMenus(newarr, catelist, pid, dep, id);
+		return newarr;
+	}
+
+	function flatMenus(newarr, catelist, pid, dep, id) {
+		catelist.forEach(function(vo, k) {
+			if (vo['parent_id'] == pid && vo['_id'] != id) {
+				vo["dep"] = dep;
+				vo['name'] = new Array(dep).join('﹄') + vo['name']
+				newarr.push(vo);
+				flatMenus(newarr, catelist, vo['_id'], dep + 1, id);
+			}
+		})
+	}
 	export default {
 		data() {
 			return {
+				categoriesdata: [], //类别列表
 				formData: {
 					"parent_id": "",
 					"name": "",
@@ -83,9 +107,32 @@
 			this.getDetail(id)
 		},
 		onReady() {
+			this.loadlist();
 			this.$refs.form.setRules(this.rules)
 		},
 		methods: {
+			//获取分类列表，并进行树形处理
+			loadlist() {
+				this.$request('system/categories/list', {}, {
+					showModal: false
+				}).then(res => {
+					this.categoriesdata = flatMenu(res, "", 1, this.formDataId);
+				}).catch(err => {
+					uni.showModal({
+						content: err.message || '请求服务失败',
+						showCancel: false
+					})
+				}).finally(() => {
+					this.loading = false
+				})
+			},
+			selectitem(index) {
+				if (index >= 0) {
+					this.formData.parent_id = this.categoriesdata[index]._id;
+				} else {
+					this.formData.parent_id = ""
+				}
+			},
 			// 图标上传相关
 			// 获取上传状态
 			iconselect(e) {
@@ -106,8 +153,7 @@
 				console.log('上传进度：', e)
 			},
 			// 上传成功
-			iconsuccess(e) {
-			},
+			iconsuccess(e) {},
 			// 上传失败
 			iconfail(e) {
 				console.log('上传失败：', e)
@@ -127,20 +173,23 @@
 			},
 
 			submitForm(value) {
+				if (value.icon == null || value.icon == undefined) {
+					value.icon = {};
+				}
+				console.log(value)
 				// 使用 clientDB 提交数据
 				this.$request('system/categories/update', Object.assign({
 					_id: this.formDataId,
-					data:value
-				}, value)).then((res) => {
+					data: value
+				})).then((res) => {
 					uni.showToast({
 						title: '修改成功'
 					})
-					this.getOpenerEventChannel().emit('refreshData')
 					setTimeout(() => uni.navigateBack(), 500)
 				}).finally(() => {
 					uni.hideLoading()
 				})
-				
+
 			},
 
 			/**
@@ -152,9 +201,13 @@
 					mask: true
 				})
 				db.collection(dbCollectionName).doc(id).field(
-					'parent_id,name,icon,sort,description,is_hot_show,is_index_show,create_date,status').get().then((res) => {
-					const data = res.result.data[0]
+					'parent_id,name,icon,sort,description,is_hot_show,is_index_show,create_date,status').get().then((
+					res) => {
+					const data = res.result.data[0];
 					if (data) {
+						if (Object.keys(data.icon).length == 0) {
+							data.icon = null;
+						}
 						this.formData = data
 					}
 				}).catch((err) => {

@@ -469,7 +469,8 @@ export default {
 				tempFile: this.files[index],
 				tempFilePath: this.files[index].url
 			})
-			this.files.splice(index, 1)
+			this.files.splice(index, 1);
+			this.setEmit();
 		},
 
 		/**

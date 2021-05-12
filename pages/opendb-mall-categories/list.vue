@@ -30,7 +30,7 @@
 					<uni-td align="center">{{item.sort}}</uni-td>
 					<uni-td align="left">{{item.name}}</uni-td>
 					<uni-td align="center">
-						<image :src="item.icon==null?'':item.icon.url" mode="aspectFit" style="width:40px;height:40px"></image>
+						<image :src="Object.keys(item.icon).length == 0?'':item.icon.url" mode="aspectFit" style="width:40px;height:40px"></image>
 					</uni-td>
 					<uni-td align="center">{{item.description}}</uni-td>
 					<uni-td align="center">
@@ -108,7 +108,8 @@
 				this.$request('system/categories/list', {}, {
 					showModal: false
 				}).then(res => {
-					this.categoriesdata = flatMenu(res, "", 1);
+					let ctes=flatMenu(res, "", 1);
+					this.categoriesdata = ctes;
 				}).catch(err => {
 					this.errMsg = err.message
 				}).finally(() => {

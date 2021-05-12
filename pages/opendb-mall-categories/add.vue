@@ -10,9 +10,9 @@
 				</uni-select-lay>
 			</uni-forms-item>
 			<uni-forms-item name="icon" label="类别图标">
-				<uni-file-picker v-model="formData.icon" fileMediatype="image" mode="grid" :limit="1" return-type="object"
-					disable-preview :auto-upload="false" file-extname="png,jpg" ref="iconupload" @select="iconselect"
-					@success="iconsuccess" @fail="iconfail" @progress="iconprogress">
+				<uni-file-picker v-model="formData.icon" fileMediatype="image" mode="grid" :limit="1"
+					return-type="object" disable-preview :auto-upload="false" file-extname="png,jpg" ref="iconupload"
+					@select="iconselect" @success="iconsuccess" @fail="iconfail" @progress="iconprogress">
 					<!-- <image src="../../static/icon/jia.png" mode="aspectFit" style="width:150rpx;height:150rpx"></image> -->
 				</uni-file-picker>
 			</uni-forms-item>
@@ -148,8 +148,7 @@
 				console.log('上传进度：', e)
 			},
 			// 上传成功
-			iconsuccess(e) {
-			},
+			iconsuccess(e) {},
 			// 上传失败
 			iconfail(e) {
 				console.log('上传失败：', e)
@@ -169,6 +168,9 @@
 			},
 
 			submitForm(value) {
+				if (value.icon == null || value.icon == undefined) {
+					value.icon = {};
+				}
 				// 使用 clientDB 提交数据
 				this.$request('system/categories/add', value).then((res) => {
 					uni.showToast({
