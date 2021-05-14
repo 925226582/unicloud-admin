@@ -99,7 +99,7 @@
 				}
 			}
 		},
-		onShow() {
+		onReady() {
 			this.loadlist();
 		},
 		methods: {
@@ -110,8 +110,12 @@
 				}).then(res => {
 					let ctes=flatMenu(res, "", 1);
 					this.categoriesdata = ctes;
+					this.$forceUpdate();//强制刷新
 				}).catch(err => {
-					this.errMsg = err.message
+					uni.showModal({
+						content: err.message || '请求服务失败',
+						showCancel: false
+					})
 				}).finally(() => {
 					this.loading = false
 				})
@@ -122,7 +126,8 @@
 					url,
 					events: {
 						refreshData: () => {
-							this.loadData(clear)
+							this.categoriesdata=[];
+							this.loadlist();
 						}
 					}
 				})

@@ -150,13 +150,13 @@
 			},
 			// 获取上传进度
 			iconprogress(e) {
-				console.log('上传进度：', e)
+				// console.log('上传进度：', e)
 			},
 			// 上传成功
 			iconsuccess(e) {},
 			// 上传失败
 			iconfail(e) {
-				console.log('上传失败：', e)
+				// console.log('上传失败：', e)
 			},
 			/**
 			 * 触发表单提交
@@ -176,7 +176,6 @@
 				if (value.icon == null || value.icon == undefined) {
 					value.icon = {};
 				}
-				console.log(value)
 				// 使用 clientDB 提交数据
 				this.$request('system/categories/update', Object.assign({
 					_id: this.formDataId,
@@ -185,6 +184,7 @@
 					uni.showToast({
 						title: '修改成功'
 					})
+					this.getOpenerEventChannel().emit('refreshData');
 					setTimeout(() => uni.navigateBack(), 500)
 				}).finally(() => {
 					uni.hideLoading()

@@ -176,6 +176,7 @@
 					uni.showToast({
 						title: '新增成功'
 					})
+					this.getOpenerEventChannel().emit('refreshData');
 					setTimeout(() => uni.navigateBack(), 500)
 				}).catch((err) => {
 					uni.showModal({
