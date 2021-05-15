@@ -137,11 +137,11 @@
 			// 获取上传状态
 			iconselect(e) {
 				let _size = e.tempFiles[0].size;
-				//判断尺寸，小于50kb
-				if (_size > 1024 * 50) {
+				//判断尺寸，小于300kb
+				if (_size > 1024 * 300) {
 					uni.showToast({
 						image: '/static/icon/error.png',
-						title: '选择的文件要小于50KB！',
+						title: '选择的文件要小于300KB！',
 						duration: 2000
 					});
 					return;

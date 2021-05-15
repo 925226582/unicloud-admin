@@ -101,6 +101,27 @@
 			this.loadlist();
 		},
 		methods: {
+			//搜索
+			search(){
+				let _query=this.query.trim();
+				this.$request('system/categories/search', Object.assign({
+					data: _query
+				}), {
+					showModal: false
+				}).then(res => {
+					console.log(res)
+					let ctes = flatMenu(res, "", 1);
+					this.categoriesdata = ctes;
+					this.$forceUpdate(); //强制刷新
+				}).catch(err => {
+					uni.showModal({
+						content: err.message || '请求服务失败',
+						showCancel: false
+					})
+				}).finally(() => {
+					this.loading = false
+				})
+			},
 			//获取分类列表，并进行树形处理
 			loadlist() {
 				this.$request('system/categories/list', {}, {

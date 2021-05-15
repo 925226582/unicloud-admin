@@ -9,6 +9,9 @@ module.exports = class CategoriesController extends Controller {
     async list() {
         return this.categoriesService.list()
     }
+	async search() {
+	    return this.categoriesService.search(this.ctx.data)
+	}
     async add() {
         return this.categoriesService.add(this.ctx.data)
     }

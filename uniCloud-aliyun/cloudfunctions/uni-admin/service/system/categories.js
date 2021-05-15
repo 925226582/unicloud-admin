@@ -13,6 +13,16 @@ module.exports = class CategoriesService extends Service {
 		} = await this.collection.orderBy('sort', 'asc').get()
 		return cateList;
 	}
+
+	async search(categories) {
+		const {
+			data: cateList
+		} = await this.collection.where({
+			name:new RegExp('/'+categories.data+'/')
+		}).orderBy('sort', 'asc').get();
+		return cateList;
+	}
+
 	async update(categories) {
 		//特殊参数  代表更改switch
 		if (categories.distinctive) {
