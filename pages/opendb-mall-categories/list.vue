@@ -9,12 +9,10 @@
 				<input class="uni-search" type="text" v-model="query" @confirm="search" placeholder="请输入搜索内容" />
 				<button class="uni-button" type="default" size="mini" @click="search">搜索</button>
 				<button class="uni-button" type="default" size="mini" @click="navigateTo('./add')">新增</button>
-				<button class="uni-button" type="default" size="mini" @click="delTable"
-					:disabled="!selectedIndexs.length">批量删除</button>
 			</view>
 		</view>
 		<view class="uni-container">
-			<uni-table border stripe type="selection" @selection-change="selectionChange">
+			<uni-table ref="catetable" type="" border stripe>
 				<uni-tr>
 					<uni-th align="center">排序</uni-th>
 					<uni-th align="center">类别名称</uni-th>
@@ -30,7 +28,8 @@
 					<uni-td align="center">{{item.sort}}</uni-td>
 					<uni-td align="left">{{item.name}}</uni-td>
 					<uni-td align="center">
-						<image :src="Object.keys(item.icon).length == 0?'':item.icon.url" mode="aspectFit" style="width:40px;height:40px"></image>
+						<image :src="Object.keys(item.icon).length == 0?'':item.icon.url" mode="aspectFit"
+							style="width:40px;height:40px"></image>
 					</uni-td>
 					<uni-td align="center">{{item.description}}</uni-td>
 					<uni-td align="center">
@@ -51,7 +50,8 @@
 						<view class="uni-group">
 							<button @click="navigateTo('./edit?id='+item._id, false)" class="uni-button" size="mini"
 								type="primary">修改</button>
-							<button @click="confirmDelete(item)" class="uni-button" size="mini" type="warn">删除</button>
+							<button @click="confirmDelete(item._id)" class="uni-button" size="mini"
+								type="warn">删除</button>
 						</view>
 					</uni-td>
 				</uni-tr>
@@ -65,7 +65,6 @@
 </template>
 
 <script>
-	
 	// 列表扁平化
 
 	//$id 代表在编辑页面 此id的所属栏目不可为自己，所以将$id的所属栏目剔除
@@ -89,9 +88,8 @@
 	export default {
 		data() {
 			return {
-				categoriesdata: [],//类别列表
+				categoriesdata: [], //类别列表
 				query: '',
-				selectedIndexs: [], //批量选中的项
 				loadMore: {
 					contentdown: '',
 					contentrefresh: '',
@@ -108,9 +106,9 @@
 				this.$request('system/categories/list', {}, {
 					showModal: false
 				}).then(res => {
-					let ctes=flatMenu(res, "", 1);
+					let ctes = flatMenu(res, "", 1);
 					this.categoriesdata = ctes;
-					this.$forceUpdate();//强制刷新
+					this.$forceUpdate(); //强制刷新
 				}).catch(err => {
 					uni.showModal({
 						content: err.message || '请求服务失败',
@@ -126,7 +124,7 @@
 					url,
 					events: {
 						refreshData: () => {
-							this.categoriesdata=[];
+							this.categoriesdata = [];
 							this.loadlist();
 						}
 					}
@@ -143,6 +141,7 @@
 				})
 				this.$request('system/categories/update', Object.assign({
 					_id: id,
+					distinctive: true, //区分直接修改
 					data: obj
 				})).then((res) => {
 					uni.showToast({
@@ -154,39 +153,46 @@
 
 			},
 			// 删除相关
-			// 多选
-			selectionChange(e) {
-				this.selectedIndexs = e.detail.index
-			},
+
 			//删除类别
-			confirmDelete(cates) {
+			confirmDelete(catesid) {
 				let content = '是否删除该类别？'
-				console.log(cates);
-				return;
 				// 有子菜单
-				if (this.menus.find(item => item.parent_id === menu.menu_id)) {
-					content = '是否删除该菜单及其所有子菜单？'
+				if (this.categoriesdata.find(item => item.parent_id === catesid)) {
+					content = '是否删除该类别及其所有子类别？'
 				}
 				uni.showModal({
 					title: '提示',
 					content,
 					success: (res) => {
-						if (!res.confirm) {
-							return
-						}
-						// uni.showLoading({
-						// 	mask: true
-						// })
-						// this.$request('system/menu/delete', {
-						// 	id: menu._id
-						// }).then(() => {
-						// 	this.init()
-						// 	this.loadData()
-						// }).finally(() => {
-						// 	uni.hideLoading()
-						// })
+						res.confirm && this.delete(catesid)
 					}
 				})
+			},
+			async delete(id) {
+				let that = this;
+				uni.showLoading({
+					mask: true
+				});
+				// return;
+				this.$request('system/categories/delete', Object.assign({
+						id: id,
+					}))
+					.then(res => {
+						uni.showToast({
+							title: '删除成功'
+						})
+						this.categoriesdata = [];
+						this.loadlist();
+					}).catch(err => {
+						uni.showModal({
+							content: err.message || '请求服务失败',
+							showCancel: false
+						})
+					}).finally(err => {
+						uni.hideLoading();
+					})
+
 			}
 		}
 	}
