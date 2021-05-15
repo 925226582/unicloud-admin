@@ -9,6 +9,7 @@
 				<input class="uni-search" type="text" v-model="query" @confirm="search" placeholder="请输入搜索内容" />
 				<button class="uni-button" type="default" size="mini" @click="search">搜索</button>
 				<button class="uni-button" type="default" size="mini" @click="navigateTo('./add')">新增</button>
+				<button class="uni-button" type="default" size="mini" @click="loadlist">重置列表</button>
 			</view>
 		</view>
 		<view class="uni-container">
@@ -102,41 +103,53 @@
 		},
 		methods: {
 			//搜索
-			search(){
-				let _query=this.query.trim();
+			search() {
+
+				let _query = this.query.trim();
+				if (_query == "") {
+					this.loadlist();
+					return;
+				}
+				uni.showLoading({
+					title: '正在搜索',
+					mask: true
+				})
+				this.categoriesdata = [];
 				this.$request('system/categories/search', Object.assign({
 					data: _query
 				}), {
 					showModal: false
 				}).then(res => {
-					console.log(res)
-					let ctes = flatMenu(res, "", 1);
-					this.categoriesdata = ctes;
-					this.$forceUpdate(); //强制刷新
+					this.categoriesdata = res;
 				}).catch(err => {
 					uni.showModal({
 						content: err.message || '请求服务失败',
 						showCancel: false
-					})
+					});
+					this.loadlist();
 				}).finally(() => {
-					this.loading = false
+					uni.hideLoading();
+					this.$forceUpdate(); //强制刷新
 				})
 			},
 			//获取分类列表，并进行树形处理
 			loadlist() {
-				this.$request('system/categories/list', {}, {
-					showModal: false
-				}).then(res => {
+				uni.showLoading({
+					title: '正在加载',
+					mask: true
+				})
+				this.categoriesdata = [];
+				this.$request('system/categories/list', {}).then(res => {
 					let ctes = flatMenu(res, "", 1);
 					this.categoriesdata = ctes;
-					this.$forceUpdate(); //强制刷新
 				}).catch(err => {
 					uni.showModal({
 						content: err.message || '请求服务失败',
 						showCancel: false
 					})
 				}).finally(() => {
-					this.loading = false
+					uni.hideLoading()
+					this.$forceUpdate(); //强制刷新
 				})
 			},
 			navigateTo(url, clear) { // clear 表示刷新列表时是否清除当前页码，true 表示刷新并回到列表第 1 页，默认为 true
@@ -145,7 +158,6 @@
 					url,
 					events: {
 						refreshData: () => {
-							this.categoriesdata = [];
 							this.loadlist();
 						}
 					}
@@ -168,6 +180,12 @@
 					uni.showToast({
 						title: '修改成功'
 					})
+				}).catch(err => {
+					uni.showModal({
+						content: err.message || '请求服务失败',
+						showCancel: false
+					});
+					this.loadlist();
 				}).finally(() => {
 					uni.hideLoading()
 				})

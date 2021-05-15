@@ -18,7 +18,7 @@ module.exports = class CategoriesService extends Service {
 		const {
 			data: cateList
 		} = await this.collection.where({
-			name:new RegExp('/'+categories.data+'/')
+			name: new RegExp(`${categories.data}`, 'i')
 		}).orderBy('sort', 'asc').get();
 		return cateList;
 	}
