@@ -2,7 +2,7 @@
 	<view>
 		<view class="uni-header">
 			<view class="uni-group hide-on-phone">
-				<view class="uni-title">商品类别管理</view>
+				<view class="uni-title">商品类别列表</view>
 				<view class="uni-sub-title"></view>
 			</view>
 			<view class="uni-group">

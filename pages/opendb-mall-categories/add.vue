@@ -5,7 +5,7 @@
 				<uni-easyinput placeholder="类别名称" v-model="formData.name" trim="both" />
 			</uni-forms-item>
 			<uni-forms-item name="parent_id" label="所属分类">
-				<uni-select-lay :value="formData.parent_id" toptitle="顶级分类名字自定义" :options="categoriesdata"
+				<uni-select-lay :value="formData.parent_id" toptitle="请选择分类" :options="categoriesdata"
 					@selectitem="selectitem">
 				</uni-select-lay>
 			</uni-forms-item>
@@ -121,7 +121,7 @@
 					this.loading = false
 				})
 			},
-			selectitem(index) {
+			selectitem(index,item) {
 				if (index >= 0) {
 					this.formData.parent_id = this.categoriesdata[index]._id;
 				} else {

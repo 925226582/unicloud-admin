@@ -50,12 +50,14 @@
 		}, {
 			"path": "pages/opendb-mall-goods/add",
 			"style": {
-				"navigationBarTitleText": "新增商品"
+				"navigationBarTitleText": "新增商品",
+				"navigationStyle": "default"
 			}
 		}, {
 			"path": "pages/opendb-mall-goods/edit",
 			"style": {
-				"navigationBarTitleText": "编辑商品"
+				"navigationBarTitleText": "编辑商品",
+				"navigationStyle": "default"
 			}
 		}, {
 			"path": "pages/opendb-mall-goods/detail",

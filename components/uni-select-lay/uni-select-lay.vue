@@ -6,9 +6,10 @@
 			<view class="uni-select-lay-icon"></view>
 		</view>
 		<view class="uni-select-lay-options" v-show="active">
-			<view class="uni-select-lay-item" :class="{active:value==''}" @click="selectitem(-1)">{{toptitle}}</view>
+			<view class="uni-select-lay-item" :class="{active:value==''}" @click="selectitem(-1,null)">{{toptitle}}
+			</view>
 			<view class="uni-select-lay-item" :class="{active:value==item._id}" v-for="(item,index) in options"
-				:key="index" @click="selectitem(index)">{{item.name}}</view>
+				:key="index" @click="selectitem(index,item)">{{item.name}}</view>
 		</view>
 	</view>
 </template>
@@ -31,7 +32,7 @@
 				type: String,
 				default: ''
 			},
-			toptitle:{
+			toptitle: {
 				type: String,
 				default: '顶级分类'
 			}
@@ -39,7 +40,8 @@
 		data() {
 			return {
 				active: false, //组件是否激活，
-				layvalue: ""
+				layvalue: "",
+				thesame: null //是否改变
 			};
 		},
 		watch: {
@@ -55,7 +57,7 @@
 		},
 		methods: {
 			//判断数组跟当前active值
-			itemcheck(){
+			itemcheck() {
 				// 此处判断是否有初始value,存在则判断显示文字
 				if (this.value != "") {
 					// 展示plachhoder
@@ -63,12 +65,13 @@
 					if (this.options.length > 0) {
 						for (var i = 0; i < this.options.length; i++) {
 							if (this.value == this.options[i]._id) {
-								this.layvalue = this.options[i].name
+								this.layvalue = this.options[i].name;
+								return;
 							}
 						}
 					}
-				}else{
-					this.layvalue=this.toptitle
+				} else {
+					this.layvalue = this.toptitle
 				}
 			},
 			//点击组件
@@ -76,9 +79,11 @@
 				this.active = !this.active;
 			},
 			//点击组件列
-			selectitem(index) {
+			selectitem(index, item) {
 				this.active = false;
-				this.$emit("selectitem",index)
+				if (this.thesame === index) return;//数据未发生变化，不执行操作
+				this.thesame = index;
+				this.$emit("selectitem", index, item)
 			}
 		}
 	}
