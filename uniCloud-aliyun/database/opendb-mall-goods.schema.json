@@ -1,7 +1,7 @@
 {
 	"bsonType": "object",
-	"required": ["goods_sn", "name", "remain_count", "month_sell_count", "total_sell_count", "comment_count", "is_real",
-		"is_on_sale", "is_alone_sale", "is_best", "is_new", "is_hot"
+	"required": ["category_id", "goods_sn", "name", "remain_count", "month_sell_count", "total_sell_count",
+		"comment_count", "is_real", "is_on_sale", "is_alone_sale", "is_best", "is_new", "is_hot"
 	],
 	"permission": {
 		"read": "doc.is_on_sale == true",
@@ -16,6 +16,7 @@
 		"category_id": {
 			"bsonType": "string",
 			"description": "分类 id，参考`opendb-mall-categories`表",
+			"title": "分类",
 			"foreignKey": "opendb-mall-categories._id"
 		},
 		"goods_sn": {
@@ -43,11 +44,9 @@
 			"trim": "both"
 		},
 		"goods_thumb": {
-			"bsonType": "string",
+			"bsonType": "object",
 			"description": "商品缩略图，用于在列表或搜索结果中预览显示",
-			"title": "缩略图地址",
-			"pattern": "^(http:\/\/|https:\/\/|\/|.\/|@\/)\\S",
-			"trim": "both"
+			"title": "缩略图地址"
 		},
 		"goods_banner_imgs": {
 			"bsonType": "array",

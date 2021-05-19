@@ -121,16 +121,6 @@
 				selectedIndexs: [] //批量选中的项
 			}
 		},
-		onPullDownRefresh() {
-			this.$refs.udb.loadData({
-				clear: true
-			}, () => {
-				uni.stopPullDownRefresh()
-			})
-		},
-		onReachBottom() {
-			this.$refs.udb.loadMore()
-		},
 		methods: {
 			onqueryload(data) {
 				for (var i = 0; i < data.length; i++) {

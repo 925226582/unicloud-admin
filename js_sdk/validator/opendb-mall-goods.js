@@ -7,9 +7,13 @@ const validator = {
   "category_id": {
     "rules": [
       {
+        "required": true
+      },
+      {
         "format": "string"
       }
-    ]
+    ],
+    "label": "分类"
   },
   "goods_sn": {
     "rules": [
@@ -52,10 +56,7 @@ const validator = {
   "goods_thumb": {
     "rules": [
       {
-        "format": "string"
-      },
-      {
-        "pattern": "^(http://|https://|/|./|@/)\\S"
+        "format": "object"
       }
     ],
     "label": "缩略图地址"
