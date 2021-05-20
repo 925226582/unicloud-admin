@@ -6,7 +6,8 @@
 			</uni-forms-item>
 			<uni-forms-item :name="showPassword ? 'password' : ''" label="重置密码">
 				<span v-show="!showPassword" class="reset-password-btn" @click="trigger">点击重置密码</span>
-				<uni-easyinput v-show="showPassword" v-model="formData.password" :clearable="false" placeholder="请输入重置密码">
+				<uni-easyinput v-show="showPassword" v-model="formData.password" :clearable="false"
+					placeholder="请输入重置密码">
 					<view slot="right" class="cancel-reset-password-btn" @click="trigger">取消</view>
 				</uni-easyinput>
 			</uni-forms-item>
@@ -20,13 +21,18 @@
 				<uni-easyinput v-model="formData.email" :clearable="false" placeholder="请输入邮箱" />
 			</uni-forms-item>
 			<uni-forms-item name="status" label="用户状态">
-				<switch v-if="Number(formData.status) < 2" @change="binddata('status', $event.detail.value)" :checked="formData.status" />
+				<switch v-if="Number(formData.status) < 2" @change="binddata('status', $event.detail.value)"
+					:checked="formData.status" />
 				<view v-else class="uni-form-item-empty">{{parseUserStatus(formData.status)}}</view>
 			</uni-forms-item>
-			<view class="uni-button-group">
-				<button style="width: 100px;" type="primary" class="uni-button" @click="submitForm">提交</button>
-				<navigator open-type="navigateBack" style="margin-left: 15px;"><button style="width: 100px;" class="uni-button">返回</button></navigator>
-			</view>
+			<uni-common-bot>
+				<view class="uni-button-group">
+					<button style="width: 100px;" type="primary" class="uni-button" @click="submitForm">提交</button>
+					<navigator open-type="navigateBack" style="margin-left: 15px;"><button style="width: 100px;"
+							class="uni-button">返回</button></navigator>
+				</view>
+			</uni-common-bot>
+
 		</uni-forms>
 	</view>
 </template>
@@ -230,6 +236,15 @@
 </script>
 
 <style>
+	.uni-button {
+		width: 100px;
+		padding: 12px 20px;
+		font-size: 14px;
+		border-radius: 0;
+		line-height: 1;
+		margin: 0;
+	}
+
 	.reset-password-btn {
 		/* height: 100%; */
 		line-height: 36px;

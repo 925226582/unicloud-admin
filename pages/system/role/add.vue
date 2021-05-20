@@ -13,10 +13,12 @@
 			<uni-forms-item name="comment" label="备注">
 				<uni-easyinput type="textarea" v-model="formData.comment" :clearable="false" placeholder="请输入备注" />
 			</uni-forms-item>
-			<view class="uni-button-group">
-				<button style="width: 100px;" type="primary" class="uni-button" @click="submitForm">提交</button>
-				<navigator open-type="navigateBack" style="margin-left: 15px;"><button style="width: 100px;" class="uni-button">返回</button></navigator>
-			</view>
+			<uni-common-bot>
+				<view class="uni-button-group">
+					<button style="width: 100px;" type="primary" class="uni-button" @click="submitForm">提交</button>
+					<navigator open-type="navigateBack" style="margin-left: 15px;"><button style="width: 100px;" class="uni-button">返回</button></navigator>
+				</view>
+			</uni-common-bot>
 		</uni-forms>
 	</view>
 </template>
@@ -117,3 +119,13 @@
 		}
 	}
 </script>
+<style lang="scss">
+	.uni-button {
+		width: 100px;
+		padding: 12px 20px;
+		font-size: 14px;
+		border-radius: 0;
+		line-height: 1;
+		margin: 0;
+	}
+</style>

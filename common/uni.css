@@ -30,12 +30,62 @@ uni-page-head .uni-btn-icon {
 }
 
 .uni-app--showleftwindow uni-page-head[uni-page-head-type=default]~uni-page-wrapper {
-	height: auto;
-	padding-top: 59px;
+	/* height: auto; */
+	padding: 0;
+	top: 44px;
+	overflow: hidden;
+
 }
+
+.uni-common-top {
+	height: 45px;
+}
+
+.uni-common-top-box {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	z-index: 33;
+	background: #fff;
+	padding: 0 30px;
+	display: flex;
+	align-items: center;
+	box-sizing: border-box;
+	border-bottom: 1px solid #eee;
+	height: 60px;
+}
+.uni-common-bot {
+	height: 45px;
+}
+
+.uni-common-bot-box {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	z-index: 33;
+	background: #fff;
+	padding: 0 30px;
+	display: flex;
+	align-items: center;
+	box-sizing: border-box;
+	border-top: 1px solid #eee;
+	height: 60px;
+}
+
+.uni-common-container{
+	width: 100%;
+}
+
+
+
 
 .uni-app--showleftwindow uni-page-head~uni-page-wrapper uni-page-body {
 	/* padding-top: 44px; */
+	border-radius: 0;
+	height: 100%;
+	overflow-y: auto;
 }
 
 .uni-app--showleftwindow uni-page-wrapper {
@@ -60,7 +110,11 @@ uni-page-head .uni-btn-icon {
 
 .uni-app--showleftwindow .uni-container .uni-forms {
 	padding: 15px;
-	max-width: 460px;
+}
+
+.uni-app--showleftwindow .uni-container .uni-forms-item__content {
+	width: 300px;
+	flex: none;
 }
 
 /* #endif */
@@ -130,10 +184,9 @@ uni-page-head .uni-btn-icon {
 
 /* 按钮样式 */
 .uni-button-group {
-	margin-top: 30px;
 	display: flex;
 	align-items: center;
-	justify-content: center;
+	justify-content: flex-end;
 }
 
 .uni-button {

@@ -35,9 +35,13 @@
 				<uni-datetime-picker return-type="timestamp" type="date" :value="formData.create_date" />
 			</uni-forms-item>
 
-			<view class="uni-button-group">
-				<button type="primary" class="uni-button" @click="submit">提交</button>
-			</view>
+			<uni-common-bot>
+				<view class="uni-button-group">
+					<button type="primary" class="uni-button" @click="submit">提交</button>
+					<navigator open-type="navigateBack" style="margin-left: 15px;"><button style="width: 100px;"
+							class="uni-button">返回</button></navigator>
+				</view>
+			</uni-common-bot>
 		</uni-forms>
 	</view>
 </template>
@@ -108,6 +112,10 @@
 		methods: {
 			//获取分类列表，并进行树形处理
 			loadlist() {
+				uni.showLoading({
+					title: '正在获取分类列表',
+					mask: true
+				});
 				this.$request('system/categories/list', {}, {
 					showModal: false
 				}).then(res => {
@@ -118,10 +126,11 @@
 						showCancel: false
 					})
 				}).finally(() => {
-					this.loading = false
+					this.loading = false;
+					uni.hideLoading();
 				})
 			},
-			selectitem(index,item) {
+			selectitem(index, item) {
 				if (index >= 0) {
 					this.formData.parent_id = this.categoriesdata[index]._id;
 				} else {
@@ -193,42 +202,11 @@
 </script>
 
 <style>
-	.uni-container {
-		padding: 15px;
-	}
-
-	.uni-input-border,
-	.uni-textarea-border {
-		width: 100%;
-		font-size: 14px;
-		color: #666;
-		border: 1px #e5e5e5 solid;
-		border-radius: 5px;
-		box-sizing: border-box;
-	}
-
-	.uni-input-border {
-		padding: 0 10px;
-		height: 35px;
-
-	}
-
-	.uni-textarea-border {
-		padding: 10px;
-		height: 80px;
-	}
-
-	.uni-button-group {
-		margin-top: 50px;
-		display: flex;
-		justify-content: center;
-	}
-
 	.uni-button {
-		width: 184px;
+		width: 100px;
 		padding: 12px 20px;
 		font-size: 14px;
-		border-radius: 4px;
+		border-radius: 0;
 		line-height: 1;
 		margin: 0;
 	}

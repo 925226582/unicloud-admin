@@ -19,7 +19,6 @@
             "style": {
                 "navigationBarTitleText": "修改密码"
             }
-
         }, {
             "path": "pages/opendb-mall-categories/list",
             "style": {
@@ -38,29 +37,21 @@
                 "navigationStyle": "default"
             }
         }, {
-            "path": "pages/opendb-mall-categories/detail",
-            "style": {
-                "navigationBarTitleText": "商品类别详情"
-            }
-        }, {
             "path": "pages/opendb-mall-goods/list",
             "style": {
-                "navigationBarTitleText": "列表"
+                "navigationBarTitleText": "商品列表"
             }
         }, {
             "path": "pages/opendb-mall-goods/add",
             "style": {
-                "navigationBarTitleText": "新增"
+                "navigationBarTitleText": "新增商品",
+				 "navigationStyle": "default"
             }
         }, {
             "path": "pages/opendb-mall-goods/edit",
             "style": {
-                "navigationBarTitleText": "编辑"
-            }
-        }, {
-            "path": "pages/opendb-mall-goods/detail",
-            "style": {
-                "navigationBarTitleText": "详情"
+                "navigationBarTitleText": "编辑商品",
+				 "navigationStyle": "default"
             }
         }
     ],
