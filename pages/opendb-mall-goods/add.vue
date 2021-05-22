@@ -2,7 +2,7 @@
 	<view class="uni-container">
 		<uni-common-top>
 			<uni-segmented-control :current="current" :values="tablist" @clickItem="onClickItem" styleType="button"
-				activeColor="#4cd964"></uni-segmented-control>
+				activeColor="#409EFF"></uni-segmented-control>
 		</uni-common-top>
 		<uni-forms ref="form" :value="formData" validate-trigger="submit" err-show-type="toast">
 			<view v-show="current === 0">
@@ -146,7 +146,7 @@
 					"comment_count": 0,
 					"is_real": true,
 					"is_on_sale": true,
-					"is_alone_sale": false,
+					"is_alone_sale": true,
 					"is_best": true,
 					"is_new": true,
 					"is_hot": true,
