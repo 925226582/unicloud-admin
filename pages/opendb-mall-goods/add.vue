@@ -75,8 +75,8 @@
 				<uni-forms-item name="seller_note" label="商家备注">
 					<uni-easyinput placeholder="商家备注，仅商家可见" v-model="formData.seller_note" trim="both" />
 				</uni-forms-item>
-				<uni-forms-item name="goods_desc" label="详细描述">
-					<uni-easyinput placeholder="商品详细描述" v-model="formData.goods_desc" trim="both" />
+				<uni-forms-item name="goods_desc" class="editors" label="详细描述">
+					<uni-editors ref="myeditors"></uni-editors>
 				</uni-forms-item>
 			</view>
 		</uni-forms>
@@ -228,6 +228,7 @@
 			 * 触发表单提交
 			 */
 			submit() {
+				this.$refs.myeditors.getvalues()
 				uni.showLoading({
 					mask: true
 				})

@@ -116,6 +116,10 @@ uni-page-head .uni-btn-icon {
 	width: 300px;
 	flex: none;
 }
+.uni-app--showleftwindow .uni-container .editors .uni-forms-item__content {
+	width: 800px;
+}
+
 
 /* #endif */
 
