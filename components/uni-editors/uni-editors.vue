@@ -36,10 +36,14 @@
 
 				<view class="iconfont icon-text_color" data-name="color" style="position: relative;" :data-value="fontColor" title="字体颜色">
 					<view class="colorbg" style="width: 70%;height:3px;position: absolute;bottom: 4px;left: 15%;"  :style="{'background':fontColor}"></view>
-					<color-picker-lay v-show="fontshow" @confirm="fontColorCheck" style="position: absolute;right:0;top:100%"></color-picker-lay>
+					<view class="colorboxs" style="position: absolute;right:0;top:100%">
+						<color-picker-lay v-show="fontshow" @confirm="fontColorCheck"></color-picker-lay>
+					</view>
 				</view>
 				<view class="iconfont icon-fontbgcolor" data-name="backgroundColor" :style="{color:bgColor}" :data-value="bgColor" title="字体背景色">
-					<color-picker-lay v-show="bgshow" @confirm="bgColorCheck" style="position: absolute;right:0;top:100%"></color-picker-lay>
+					<view class="colorboxs" style="position: absolute;right:0;top:100%">
+						<color-picker-lay v-show="bgshow" @confirm="bgColorCheck"></color-picker-lay>
+					</view>
 				</view>
 
 				<view class="iconfont icon-date" @tap="insertDate" title="插入日期"></view>
