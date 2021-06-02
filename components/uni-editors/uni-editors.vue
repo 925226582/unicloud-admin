@@ -69,7 +69,6 @@
 				<view :class="formats.direction === 'rtl' ? 'ql-active' : ''" class="iconfont icon-direction-rtl"
 					data-name="direction" data-value="rtl" title="反向"></view>
 			</view>
-			
 			<view class="editor-wrapper">
 				<editor id="editor" class="ql-container" placeholder="开始输入..." showImgSize showImgToolbar showImgResize
 					@statuschange="onStatusChange" :read-only="readOnly" @ready="onEditorReady">
@@ -220,7 +219,7 @@
 	.iconfont {
 		display: inline-block;
 		padding: 8px 8px;
-		width: 24px;
+		min-width: 24px;
 		height: 24px;
 		cursor: pointer;
 		font-size: 20px;

@@ -53,6 +53,9 @@ uni-page-head .uni-btn-icon {
 	align-items: center;
 	box-sizing: border-box;
 	border-bottom: 1px solid #eee;
+	height: 50px;
+}
+.uni-app--showleftwindow  .uni-common-top-box{
 	height: 60px;
 }
 .uni-common-bot {
@@ -71,14 +74,14 @@ uni-page-head .uni-btn-icon {
 	align-items: center;
 	box-sizing: border-box;
 	border-top: 1px solid #eee;
+	height: 50px;
+}
+.uni-app--showleftwindow  .uni-common-bot-box{
 	height: 60px;
 }
-
 .uni-common-container{
 	width: 100%;
 }
-
-
 
 
 .uni-app--showleftwindow uni-page-head~uni-page-wrapper uni-page-body {
@@ -87,7 +90,10 @@ uni-page-head .uni-btn-icon {
 	height: 100%;
 	overflow-y: auto;
 }
-
+uni-page-body{
+	height: 100%;
+	overflow-y: auto;
+}
 .uni-app--showleftwindow uni-page-wrapper {
 	position: absolute;
 	width: 100%;
@@ -106,6 +112,7 @@ uni-page-head .uni-btn-icon {
 	border-radius: 5px;
 	box-shadow: -1px -1px 5px 0 rgba(0, 0, 0, .1);
 	background-color: #fff;
+	
 }
 
 .uni-app--showleftwindow .uni-container .uni-forms {

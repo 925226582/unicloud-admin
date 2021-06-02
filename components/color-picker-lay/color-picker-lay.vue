@@ -73,6 +73,10 @@
 				alpha: 1.00,
 				cx: 270, //颜色画布位置
 				cy: 0, //颜色画布位置
+				old: {
+					cx: 270,
+					cy: 0
+				},
 				ry: 0, //颜色条位置
 				ax: 0, //底部透明度 位置
 				rgb: "rgb(255,0,0)",
@@ -97,9 +101,8 @@
 			// 右侧颜色条改变
 			colorBarChange(e) {
 				let _b = e.detail.y / 143;
-				this.ry = e.detail.y;
 				this.colorObj = this.changeColorBar(_b);
-				this.changeColor(this.cx, this.cy);
+				this.changeColor(this.old.cx, this.old.cy);
 				this.objToRGB(this.colorObj);
 			},
 			changeColorBar(scale) {
@@ -158,9 +161,9 @@
 			},
 			// 画布移动
 			colorChange(e) {
-				this.cx = e.detail.x;
-				this.cy = e.detail.y;
-				this.changeColor();
+				this.old.cx = e.detail.x;
+				this.old.cy = e.detail.y;
+				this.changeColor(e.detail.x, e.detail.y);
 			},
 			scaleChange(diff, scale) {
 				for (var i in diff) {
@@ -168,9 +171,7 @@
 				}
 				return diff;
 			},
-			changeColor() {
-				let x = this.cx;
-				let y = this.cy;
+			changeColor(x, y) {
 				var _a = this.colorObj,
 					r = _a.r,
 					g = _a.g,
